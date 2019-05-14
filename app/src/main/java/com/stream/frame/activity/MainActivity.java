@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private Camera mcamera;
     private int screenWidth, screenHeight;
     private boolean isPreview = false; // 是否在浏览中
-
-    private int pic_name = 1;
     private byte[] mPreBuffer = null;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
