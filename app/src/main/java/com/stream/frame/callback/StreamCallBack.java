@@ -1,14 +1,18 @@
 package com.stream.frame.callback;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import com.stream.frame.utils.NV21ToBitmap;
 
 import com.stream.frame.utils.FileUtil;
 
@@ -24,6 +28,12 @@ import java.io.IOException;
 public class StreamCallBack implements Camera.PreviewCallback {
     private int pic_name = 1;
     private byte[] mPreBuffer;
+//    private Context context;
+
+//    public StreamCallBack(byte[] preBuffer,Context mContext){
+//        this.mPreBuffer = preBuffer;
+//        this.context = mContext;
+//    }
 
     public StreamCallBack(byte[] preBuffer){
         this.mPreBuffer = preBuffer;
@@ -47,7 +57,13 @@ public class StreamCallBack implements Camera.PreviewCallback {
                 ByteArrayOutputStream outstream = new ByteArrayOutputStream(data.length);
                 image.compressToJpeg(new Rect(0, 0, size.width, size.height), 100, outstream);
                 byte[] tmp = outstream.toByteArray();
+
+                //==================================================================================
                 Bitmap bmp = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
+
+//                NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(context);
+//                Bitmap bmp = nv21ToBitmap.nv21ToBitmap(tmp,size.width,size.height);
+                //==================================================================================
 
                 String picture_name = pic_name + ".jpg";
                 System.out.println(picture_name);
