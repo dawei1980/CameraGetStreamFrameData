@@ -1,100 +1,41 @@
 package com.stream.frame.utils;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-public class FileUtils {
-    private String SDCardRoot;
-    private static boolean isCardExist;
+public class FileUtil {
 
-    public FileUtils() throws NoSdcardException {
-        getSDCardRoot();
-    }
-
-    public String getSDCardRoot() throws NoSdcardException{
-        if(isCardExist()){
-            SDCardRoot = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
-        }else{
-            throw new NoSdcardException();
+    /**新添加的保存到手机的方法*/
+    @SuppressLint("SdCardPath")
+    public static void saveBitmap(Bitmap bitmap, String bitName) {
+        File appDir = new File(Environment.getExternalStorageDirectory()+"/"+"smartPhoneCamera", "Images");
+        if (!appDir.exists()) {
+            appDir.mkdir();
         }
-        return SDCardRoot;
-    }
+        File file = new File(appDir, bitName);     // 创建文件
+        try {                                       // 写入图片
+            FileOutputStream fos = new FileOutputStream(file);
+            Bitmap endBit = Bitmap.createScaledBitmap(bitmap, 720, 1280, true); //创建新的图像大小
+            endBit.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
-    public static boolean isCardExist(){
-        isCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)?true:false;
-        return isCardExist;
-    }
-    public File createFileInSDCard(String fileName, String dir)
-            throws IOException {
-        File file = new File(SDCardRoot + dir + File.separator + fileName);
-        if(!file.exists()){
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-        }
-        return file;
-    }
-    public File creatSDDir(String dir) {
-        File dirFile = new File(SDCardRoot + dir + File.separator);
-        if(!dirFile.exists()){
-            dirFile.mkdirs();
-        }
-
-        return dirFile;
-    }
-    public boolean filterFileExist(String path, String filter) {
-        File file = new File(SDCardRoot + path + File.separator);
-        if (file.exists() && file.isDirectory()) {
-
-            String[] fileNames = file.list(new FilenameFilter() {
-                public boolean accept(File dir, String filename) {
-                    return filename.endsWith(".png");
-                }
-            });
-            if (fileNames.length > 0) {
-                return true;
-            } else {
-                return false;
+            if(!endBit.isRecycled()){
+                bitmap.recycle();
             }
-        } else {
-            return false;
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-
-    /**
-     *
-     */
-    public boolean isFileExist(String fileName, String path) {
-        File file = new File(SDCardRoot + path + File.separator + fileName);
-        return file.exists();
-    }
-    public File getFile(String fileName,String path){
-        File file = new File(SDCardRoot + path + File.separator + fileName);
-        return file;
-    }
-    public void deleteFile(String fileName, String path) {
-        File file = new File(SDCardRoot + path + File.separator + fileName);
-        boolean result = file.delete();
-    }
-
-    public void closeInputStream(InputStream inputStream){
-        if(inputStream!=null){
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                Log.e("error", "close failed");
-                e.printStackTrace();
-            }
-        }
-    }
-    public class NoSdcardException extends Exception{
-
-    }
-
 
     /**
      * 删除文件夹中的内容,不删除文件夹本身

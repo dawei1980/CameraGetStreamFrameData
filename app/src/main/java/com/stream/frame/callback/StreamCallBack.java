@@ -10,6 +10,8 @@ import android.hardware.Camera;
 import android.os.Environment;
 import android.util.Log;
 
+import com.stream.frame.utils.FileUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +35,7 @@ public class StreamCallBack implements Camera.PreviewCallback {
         try {
             // 调用image.compressToJpeg（）将YUV格式图像数据data转为jpg格式
             YuvImage image = new YuvImage(data, ImageFormat.NV21, size.width, size.height, null);
-            if (image != null && data != null) {
+            if (data != null) {
 
                 //设置缓冲区
                 int previewSize = size.width * size.height * 3 / 2;
@@ -50,7 +52,7 @@ public class StreamCallBack implements Camera.PreviewCallback {
                 String picture_name = pic_name + ".jpg";
                 System.out.println(picture_name);
 
-                saveBitmap(bmp, picture_name);
+                FileUtil.saveBitmap(bmp, picture_name);
 
                 pic_name = pic_name + 1;
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaassssssssssssssssssssssssssss");
@@ -59,27 +61,6 @@ public class StreamCallBack implements Camera.PreviewCallback {
             }
         } catch (Exception ex) {
             Log.e("Sys", "Error:" + ex.getMessage());
-        }
-    }
-
-    //新添加的保存到手机的方法
-    @SuppressLint("SdCardPath")
-    private void saveBitmap(Bitmap bitmap, String bitName) {
-        File appDir = new File(Environment.getExternalStorageDirectory()+"/"+"smartPhoneCamera", "Images");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        File file = new File(appDir, bitName);     // 创建文件
-        try {                                       // 写入图片
-            FileOutputStream fos = new FileOutputStream(file);
-            Bitmap endBit = Bitmap.createScaledBitmap(bitmap, 720, 1280, true); //创建新的图像大小
-            endBit.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
