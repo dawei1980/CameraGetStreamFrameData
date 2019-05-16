@@ -27,14 +27,17 @@ import java.io.IOException;
 public class StreamCallBack implements Camera.PreviewCallback {
     private int pic_name = 1;
     private byte[] mPreBuffer;
-    private Context context;
+//    private Context context;
 
-    public StreamCallBack(byte[] preBuffer,Context mContext){
+//    public StreamCallBack(byte[] preBuffer,Context mContext){
+//        this.mPreBuffer = preBuffer;
+//        this.context = mContext;
+//    }
+
+    public StreamCallBack(byte[] preBuffer){
         this.mPreBuffer = preBuffer;
-        this.context = mContext;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         Camera.Size size = camera.getParameters().getPreviewSize();
@@ -55,16 +58,16 @@ public class StreamCallBack implements Camera.PreviewCallback {
                 byte[] tmp = outstream.toByteArray();
 
                 //==================================================================================
-//                Bitmap bmp = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
+                Bitmap bmp = BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
 
-                NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(context);
+//                NV21ToBitmap nv21ToBitmap = new NV21ToBitmap(context);
 //                Bitmap bmp = nv21ToBitmap.nv21ToBitmap(tmp,size.width,size.height);
                 //==================================================================================
 
                 String picture_name = pic_name + ".jpg";
                 System.out.println(picture_name);
 
-                saveBitmap(nv21ToBitmap.nv21ToBitmap(tmp,size.width,size.height), picture_name);
+                saveBitmap(bmp, picture_name);
 
                 pic_name = pic_name + 1;
                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaassssssssssssssssssssssssssss");

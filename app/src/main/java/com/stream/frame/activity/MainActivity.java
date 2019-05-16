@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                     parameters.setPictureFormat(ImageFormat.NV21); // 设置图片格式
                     parameters.setPictureSize(screenWidth, screenHeight); // 设置照片的大小
                     parameters.setPreviewFrameRate(3);// 每秒3帧 每秒从摄像头里面获得3个画面,
-                    camera.setPreviewCallback(new StreamCallBack(mPreBuffer,MainActivity.this)); // 设置回调的类
+//                    camera.setPreviewCallback(new StreamCallBack(mPreBuffer,MainActivity.this)); // 设置回调的类
+                    camera.setPreviewCallback(new StreamCallBack(mPreBuffer)); // 设置回调的类
                     camera.addCallbackBuffer(mPreBuffer);
                     System.out.println("asasasasasasasasssssssssssssssssssssssssssss");
                     camera.startPreview(); // 开始预览
