@@ -198,15 +198,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 personTracker.personStreamDetect(bmp);
                 //================================================================================
 
-                String picture_name = pic_name + ".jpg";
-                System.out.println(picture_name);
+//                String picture_name = pic_name + ".jpg";
+//                System.out.println(picture_name);
+//                saveBitmap(bmp, picture_name);
+//                pic_name = pic_name + 1;
+//                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaassssssssssssssssssssssssssss");
 
-                saveBitmap(bmp, picture_name);
-
-                pic_name = pic_name + 1;
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaassssssssssssssssssssssssssss");
                 outstream.flush();
-                Thread.sleep(5000);
+//                Thread.sleep(5000);
             }
         } catch (Exception ex) {
             Log.e("Sys", "Error:" + ex.getMessage());
